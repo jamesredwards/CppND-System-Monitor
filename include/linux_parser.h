@@ -4,6 +4,7 @@
 #include <fstream>
 #include <regex>
 #include <string>
+#include <vector>
 
 namespace LinuxParser {
 // Paths
@@ -45,6 +46,8 @@ long Jiffies();
 long ActiveJiffies();
 long ActiveJiffies(int pid);
 long IdleJiffies();
+
+std::vector<long> ParseProcStat(std::string key);
 
 // Processes
 std::string Command(int pid);

@@ -5,6 +5,7 @@
 #include <string>
 
 namespace Format {
+std::string FormatBytes(std::string kb);
 std::string ElapsedTime(long times);
 std::string FormatUnit(long unit);  // TODO: See src/format.cpp
 };                                  // namespace Format
