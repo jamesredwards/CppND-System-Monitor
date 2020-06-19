@@ -18,4 +18,8 @@ void test_get_command();
 void test_pid_uptime();
 void test_ram();
 void test_active_jiffies();
+
+// Processor test(s)
+void test_processor();
+void test_processor_utilisation();
 #endif

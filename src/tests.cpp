@@ -5,6 +5,8 @@
 
 #include "format.h"
 #include "linux_parser.h"
+#include "processor.h"
+#include "unistd.h"
 
 using std::cout;
 using std::endl;
@@ -28,6 +30,8 @@ void test_linux_parser() {
   test_ram();
   test_active_jiffies();
 }
+
+void test_processor() { test_processor_utilisation(); }
 
 void test_os() {
   cout << "Testing OS...\t";
@@ -117,4 +121,12 @@ void test_active_jiffies() {
   cout << "Testing active jiffies by PID...\t";
   long i = LinuxParser::ActiveJiffies(16295);
   cout << i << endl;
+}
+
+void test_processor_utilisation() {
+  Processor p;
+  for (int i = 0; i < 10; i++) {
+    float util = p.Utilization();
+    cout << "Util: " << util << endl;
+  }
 }

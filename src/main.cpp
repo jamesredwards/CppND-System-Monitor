@@ -5,5 +5,6 @@
 int main() {
   // System system;
   // NCursesDisplay::Display(system);
-  test_linux_parser();
+  // test_linux_parser();
+  test_processor();
 }
