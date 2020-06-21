@@ -31,7 +31,6 @@ void test_linux_parser() {
   test_pid_uptime();
   test_ram();
   test_active_jiffies();
-  test_system();
 }
 
 void test_system() {
@@ -46,7 +45,8 @@ void test_system() {
   cout << "Cpu: " << s.Cpu().Utilization() << endl;
   cout << "Processes: " << endl;
   for (auto p : s.Processes()) {
-    cout << "Process: " << p.Pid() << ", " << p.Command() << endl;
+    cout << "Process: " << p.Pid() << ", " << p.User() << ", " << p.Ram()
+         << ", " << p.CpuUtilization() << endl;
   }
 }
 

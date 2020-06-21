@@ -246,10 +246,9 @@ float LinuxParser::ProcessCpuUtilization(int pid) {
 
     total_time += stol(cutime) + stol(cstime);
 
-    float seconds =
-        float(UpTime(pid)) - (stof(starttime) / sysconf(_SC_CLK_TCK));
+    float seconds = float(UpTime()) - (stof(starttime) / sysconf(_SC_CLK_TCK));
 
-    util = 100.0 * ((total_time / sysconf(_SC_CLK_TCK)) / seconds);
+    util = ((total_time / sysconf(_SC_CLK_TCK)) / seconds);
   }
   return util;
 }

@@ -18,8 +18,11 @@ using std::vector;
 int Process::Pid() { return pid_; }
 
 // TODO: Return this process's CPU utilization
-float Process::CpuUtilization() {
+float Process::CpuUtilization() const {
   float util = LinuxParser::ProcessCpuUtilization(pid_);
+  if (util < 0) {
+    util = 0.0;
+  }
   return util;
 }
 
@@ -45,6 +48,11 @@ long int Process::UpTime() {
 // REMOVE: [[maybe_unused]] once you define the function
 bool Process::operator<(Process const& a) const {
   return (this->pid_ < a.pid_);
+  // return (CpuUtilization() < a.CpuUtilization());
+}
+
+bool Process::compare(Process& p1, Process& p2) {
+  return p1.CpuUtilization() > p2.CpuUtilization();
 }
 
 Process::Process(int pid) {

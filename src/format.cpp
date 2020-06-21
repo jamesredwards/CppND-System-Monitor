@@ -35,9 +35,9 @@ string Format::FormatUnit(long unit) {
 string Format::FormatBytes(string kb) {
   long kilobytes = std::stol(kb);
   if (kilobytes >= 1000 && kilobytes < 1000000) {
-    return std::to_string(kilobytes / 1000) + "M";
+    return std::to_string(kilobytes / 1000);
   } else if (kilobytes >= 1000000) {
-    return std::to_string(kilobytes / 1000000) + "G";
+    return std::to_string(kilobytes / 1000000);
   } else {
     return kb;
   }
