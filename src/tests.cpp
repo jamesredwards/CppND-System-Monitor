@@ -7,6 +7,7 @@
 #include "linux_parser.h"
 #include "process.h"
 #include "processor.h"
+#include "system.h"
 #include "unistd.h"
 
 using std::cout;
@@ -30,6 +31,23 @@ void test_linux_parser() {
   test_pid_uptime();
   test_ram();
   test_active_jiffies();
+  test_system();
+}
+
+void test_system() {
+  System s;
+  cout << "Testing System..." << endl;
+  cout << "OS: " << s.OperatingSystem() << endl;
+  cout << "Kernel: " << s.Kernel() << endl;
+  cout << "Memory: " << s.MemoryUtilization() << endl;
+  cout << "Uptime: " << s.UpTime() << endl;
+  cout << "Total procs: " << s.TotalProcesses() << endl;
+  cout << "Running procs: " << s.RunningProcesses() << endl;
+  cout << "Cpu: " << s.Cpu().Utilization() << endl;
+  cout << "Processes: " << endl;
+  for (auto p : s.Processes()) {
+    cout << "Process: " << p.Pid() << ", " << p.Command() << endl;
+  }
 }
 
 void test_processor() { test_processor_utilisation(); }

@@ -25,4 +25,7 @@ void test_processor_utilisation();
 
 // Process test
 void test_process();
+
+// System test
+void test_system();
 #endif
