@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <unistd.h>
 
+#include <filesystem>
 #include <iostream>
 #include <numeric>
 #include <string>
@@ -11,9 +12,11 @@
 #include "format.h"
 
 using std::stof;
+using std::stol;
 using std::string;
 using std::to_string;
 using std::vector;
+namespace fs = std::filesystem;  // TODO
 
 // DONE: An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
@@ -111,7 +114,6 @@ long LinuxParser::UpTime() {
     while (std::getline(stream, line)) {
       std::istringstream linestream(line);
       linestream >> uptime >> idle;
-      // std::cout << "Uptime: " << uptime << ", idle: " << idle << std::endl;
     }
   }
   return (long)uptime;  // just cast it to long
@@ -226,6 +228,32 @@ vector<string> LinuxParser::CpuUtilization() {
   return data;
 }
 
+float LinuxParser::ProcessCpuUtilization(int pid) {
+  float util = 0.0;
+  string line, pid_s, comm, state, ppid, pgrp, session, tty_nr, tpgid, flags,
+      minflt, cminflt, majflt, cmajflt, utime, stime, cutime, cstime, priority,
+      nice, num_threads, itrealvalue, starttime;
+  std::ifstream stream(kProcDirectory + to_string(pid) + kStatFilename);
+  if (stream.is_open()) {
+    std::getline(stream, line);
+    std::istringstream linestream(line);
+    linestream >> pid_s >> comm >> state >> ppid >> pgrp >> session >> tty_nr >>
+        tpgid >> flags >> minflt >> cminflt >> majflt >> cmajflt >> utime >>
+        stime >> cutime >> cstime >> priority >> nice >> num_threads >>
+        itrealvalue >> starttime;
+
+    long total_time = stol(utime) + stol(stime);
+
+    total_time += stol(cutime) + stol(cstime);
+
+    float seconds =
+        float(UpTime(pid)) - (stof(starttime) / sysconf(_SC_CLK_TCK));
+
+    util = 100.0 * ((total_time / sysconf(_SC_CLK_TCK)) / seconds);
+  }
+  return util;
+}
+
 // TODO: Read and return the total number of processes
 int LinuxParser::TotalProcesses() {
   int processes = 1;
@@ -311,15 +339,19 @@ string LinuxParser::User(int pid) {
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid) {
   long uptime = 0;
-  string line, tokens;
+  string line, token;
   std::ifstream stream(kProcDirectory + to_string(pid) + kStatFilename);
   if (stream.is_open()) {
     while (std::getline(stream, line)) {
       std::istringstream linestream(line);
       vector<string> info(std::istream_iterator<std::string>{linestream},
                           std::istream_iterator<std::string>());
-      uptime = stol(info[21]) / sysconf(_SC_CLK_TCK);
+      // for (int i = 0; i < info.size(); i++) {
+      //   std::cout << "Index: " << i << ": " << info[i] << std::endl;
+      // }
+      // why am i losing the first element? not sure. fix by setting to 22
+      uptime = stol(info[23]) / sysconf(_SC_CLK_TCK);
     }
   }
-  return UpTime() - uptime;
+  return uptime;
 }

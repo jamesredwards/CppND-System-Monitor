@@ -5,6 +5,7 @@
 
 #include "format.h"
 #include "linux_parser.h"
+#include "process.h"
 #include "processor.h"
 #include "unistd.h"
 
@@ -32,6 +33,17 @@ void test_linux_parser() {
 }
 
 void test_processor() { test_processor_utilisation(); }
+
+void test_process() {
+  Process p(1);
+  cout << "Process test..." << endl;
+  cout << "PID: " << p.Pid() << endl;
+  cout << "Command: " << p.Command() << endl;
+  cout << "User: " << p.User() << endl;
+  cout << "Uptime: " << p.UpTime() << endl;
+  cout << "RAM: " << p.Ram() << endl;
+  cout << "Cpu Util: " << p.CpuUtilization() << endl;
+}
 
 void test_os() {
   cout << "Testing OS...\t";
@@ -89,44 +101,44 @@ void test_procs_running() {
 
 void test_get_uid() {
   cout << "Testing Uid...\t";
-  string i = LinuxParser::Uid(16295);
+  string i = LinuxParser::Uid(1);
   cout << i << endl;
 }
 
 void test_get_user() {
   cout << "Testing User...\t";
-  string i = LinuxParser::User(16295);
+  string i = LinuxParser::User(1);
   cout << i << endl;
 }
 
 void test_get_command() {
   cout << "Testing Command...\t";
-  string i = LinuxParser::Command(16295);
+  string i = LinuxParser::Command(1);
   cout << i << endl;
 }
 
 void test_pid_uptime() {
   cout << "Testing PID Uptime...\t";
-  string i = Format::ElapsedTime(LinuxParser::UpTime(16295));
+  string i = Format::ElapsedTime(LinuxParser::UpTime(1));
   cout << i << endl;
 }
 
 void test_ram() {
   cout << "Testing RAM...\t";
-  string i = LinuxParser::Ram(16295);
+  string i = LinuxParser::Ram(1);
   cout << i << endl;
 }
 
 void test_active_jiffies() {
   cout << "Testing active jiffies by PID...\t";
-  long i = LinuxParser::ActiveJiffies(16295);
+  long i = LinuxParser::ActiveJiffies(1);
   cout << i << endl;
 }
 
 void test_processor_utilisation() {
   Processor p;
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 3; i++) {
     float util = p.Utilization();
-    cout << "Util: " << util << endl;
+    cout << "CPU Util: " << util << endl;
   }
 }

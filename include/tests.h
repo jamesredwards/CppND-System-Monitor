@@ -22,4 +22,7 @@ void test_active_jiffies();
 // Processor test(s)
 void test_processor();
 void test_processor_utilisation();
+
+// Process test
+void test_process();
 #endif

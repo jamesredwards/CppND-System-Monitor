@@ -2,6 +2,7 @@
 #define PROCESS_H
 
 #include <string>
+
 /*
 Basic class for Process representation
 It contains relevant attributes as shown below
@@ -17,7 +18,16 @@ class Process {
   bool operator<(Process const& a) const;  // TODO: See src/process.cpp
 
   // TODO: Declare any necessary private members
+  Process(int pid);
+
  private:
+  int pid_;
+  std::string user_;
+  std::string cmd_;
+  std::string ram_;
+  long int uptime_;
+  long int uptime_init_;
+  long int system_uptime_;
 };
 
 #endif
