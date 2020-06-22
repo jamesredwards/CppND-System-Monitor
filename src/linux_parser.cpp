@@ -16,7 +16,7 @@ using std::stol;
 using std::string;
 using std::to_string;
 using std::vector;
-namespace fs = std::filesystem;  // TODO
+namespace fs = std::filesystem;
 
 // DONE: An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
@@ -56,22 +56,19 @@ string LinuxParser::Kernel() {
 }
 
 // BONUS: Update this to use std::filesystem
+// updated
 vector<int> LinuxParser::Pids() {
   vector<int> pids;
-  DIR* directory = opendir(kProcDirectory.c_str());
-  struct dirent* file;
-  while ((file = readdir(directory)) != nullptr) {
-    // Is this a directory?
-    if (file->d_type == DT_DIR) {
-      // Is every character of the name a digit?
-      string filename(file->d_name);
+  for (auto& e : fs::directory_iterator(kProcDirectory)) {
+    if (fs::is_directory(e)) {
+      string filename = e.path().filename().string();
       if (std::all_of(filename.begin(), filename.end(), isdigit)) {
+        // std::cout << "filename: " << filename << std::endl;
         int pid = stoi(filename);
         pids.push_back(pid);
       }
     }
   }
-  closedir(directory);
   return pids;
 }
 

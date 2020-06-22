@@ -1,6 +1,8 @@
 monitor
 a.out
 settings.json
+launch.json
+tasks.json
 *.o
 build/*
 *.json
