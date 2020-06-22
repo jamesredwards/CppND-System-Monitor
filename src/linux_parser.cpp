@@ -142,22 +142,6 @@ std::vector<long> LinuxParser::ParseProcStat(string key) {
 
 // TODO: Read and return the number of jiffies for the system
 long LinuxParser::Jiffies() {
-  /* from
-https://stackoverflow.com/questions/23367857/accurate-calculation-of-cpu-usage-given-in-percentage-in-linux
-  // Guest time is already accounted in usertime
-usertime = usertime - guest;
-#As you see here, it subtracts guest from user time
-nicetime = nicetime - guestnice;
-#and guest_nice from nice time
-      // Fields existing on kernels >= 2.6
-      // (and RHEL's patched kernel 2.4...)
-idlealltime = idletime + ioWait;
-#ioWait is added in the idleTime
-systemalltime = systemtime + irq + softIrq;
-virtalltime = guest + guestnice;
-totaltime = usertime + nicetime + systemalltime + idlealltime + steal +
-virtalltime;
-      */
   vector<string> cpu_jiffies_str = CpuUtilization();
   long totaltime = 0;
   for (size_t i = 0; i < cpu_jiffies_str.size(); i++) {
@@ -342,11 +326,7 @@ long LinuxParser::UpTime(int pid) {
       std::istringstream linestream(line);
       vector<string> info(std::istream_iterator<std::string>{linestream},
                           std::istream_iterator<std::string>());
-      // for (int i = 0; i < info.size(); i++) {
-      //   std::cout << "Index: " << i << ": " << info[i] << std::endl;
-      // }
-      // why am i losing the first element? not sure. fix by setting to 22
-      uptime = stol(info[23]) / sysconf(_SC_CLK_TCK);
+      uptime = stol(info[21]) / sysconf(_SC_CLK_TCK);
     }
   }
   return uptime;
