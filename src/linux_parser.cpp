@@ -3,7 +3,8 @@
 #include <dirent.h>
 #include <unistd.h>
 
-#include <filesystem>
+// #include <filesystem> //for compilation on home system
+#include <experimental/filesystem>
 #include <iostream>
 #include <numeric>
 #include <string>
@@ -16,7 +17,8 @@ using std::stol;
 using std::string;
 using std::to_string;
 using std::vector;
-namespace fs = std::filesystem;
+// namespace fs = std::filesystem;
+namespace fs = std::experimental::filesystem;
 
 // DONE: An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
